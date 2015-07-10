@@ -12,16 +12,30 @@
 
 - (void)main:(JSContext *)context
 {
-    context[@"malloc"] = ^id(size_t size) {
+    context[@"memset"]  = ^void(JSValue *jsVal, int ch,size_t n) {
+        memset([self formatPointerJSToOC:jsVal], ch, n);
+    };
+
+    context[@"memmove"] = ^id(JSValue *des, JSValue *src, size_t n) {
+        void *ret = memmove([self formatPointerJSToOC:des], [self formatPointerJSToOC:src], n);
+        return [self formatPointerOCToJS:ret];
+    };
+
+    context[@"memcpy"]  = ^id(JSValue *des, JSValue *src, size_t n) {
+        void *ret = memcpy([self formatPointerJSToOC:des], [self formatPointerJSToOC:src], n);
+        return [self formatPointerOCToJS:ret];
+    };
+
+    context[@"malloc"]  = ^id(size_t size) {
         void *m = malloc(size);
         return [self formatPointerOCToJS:m];
     };
     
-    context[@"free"]   = ^void(JSValue *jsVal) {
+    context[@"free"]    = ^void(JSValue *jsVal) {
         void *m = [self formatPointerJSToOC:jsVal];
         free(m);
     };
-    
 }
+
 
 @end

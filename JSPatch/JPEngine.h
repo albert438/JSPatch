@@ -30,7 +30,9 @@
 @interface JPExtension : NSObject <JPExtensionProtocol>
 + (instancetype)instance;
 - (void *)formatPointerJSToOC:(JSValue *)val;
+- (Class)formatClassJSToOC:(JSValue *)val;
 - (id)formatPointerOCToJS:(void *)pointer;
+- (id)formatClassOCToJS:(Class)clazz;
 - (id)formatJSToOC:(JSValue *)val;
 - (id)formatOCToJS:(id)obj;
 @end

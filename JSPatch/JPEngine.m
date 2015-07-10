@@ -70,9 +70,24 @@ id formatOCToJS(id obj);
     }
 }
 
+- (Class)formatClassJSToOC:(JSValue *)val {
+    if ([[val toObject] isKindOfClass:[NSDictionary class]]) {
+        return [(JPBoxing *)([val toObject][@"__obj"]) unboxClass];
+    }else if(![val toBool]) {
+        return NULL;
+    }
+    else{
+        return [((JPBoxing *)[val toObject]) unboxClass];
+    }
+}
+
 - (id)formatPointerOCToJS:(void *)pointer
 {
     return formatOCToJS([JPBoxing boxPointer:pointer]);
+}
+
+- (id)formatClassOCToJS:(Class)class {
+    return formatOCToJS([JPBoxing boxClass:class]);
 }
 
 - (id)formatJSToOC:(JSValue *)val
