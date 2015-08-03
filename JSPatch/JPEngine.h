@@ -35,5 +35,6 @@
 - (id)formatClassOCToJS:(Class)clazz;
 - (id)formatJSToOC:(JSValue *)val;
 - (id)formatOCToJS:(id)obj;
+- (void *)getPointerFromJS:(JSValue *)val;
 @end
 

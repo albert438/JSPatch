@@ -26,7 +26,7 @@
         return [self formatPointerOCToJS:ret];
     };
 
-    context[@"malloc"]  = ^id(size_t size) {
+    context[@"malloc"] = ^id(size_t size) {
         void *m = malloc(size);
         return [self formatPointerOCToJS:m];
     };
@@ -34,6 +34,23 @@
     context[@"free"]    = ^void(JSValue *jsVal) {
         void *m = [self formatPointerJSToOC:jsVal];
         free(m);
+    };
+  
+    context[@"pval"]    = ^id(JSValue *jsVal) {
+        void *m = [self formatPointerJSToOC:jsVal];
+        id obj = *((__unsafe_unretained id *)m);
+        return [self formatOCToJS:obj];
+    };
+    
+    context[@"getpointer"] = ^id(JSValue *jsVal) {
+        void *pointer = [self getPointerFromJS:jsVal];
+        return [self formatPointerOCToJS:pointer];
+    };
+    
+    context[@"pvalWithBool"] = ^id(JSValue *jsVal) {
+        void *m = [self formatPointerJSToOC:jsVal];
+        BOOL b = *((BOOL *)m);
+        return [self formatOCToJS:[NSNumber numberWithBool:b]];
     };
 }
 
