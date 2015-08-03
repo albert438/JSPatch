@@ -349,6 +349,12 @@ typedef struct {
     return NULL;
 }
 
+- (void)funcTestNSErrorPointer:(NSError **)error
+{
+    NSError *tmp = [[NSError alloc]initWithDomain:@"com.albert43" code:43 userInfo:@{@"msg":@"test error"}];
+    *error = tmp;
+}
+
 - (void *)funcReturnPointer
 {
     JPTestStruct *testStruct = (JPTestStruct*)malloc(sizeof(JPTestStruct));
@@ -388,6 +394,25 @@ typedef struct {
         }
     }
     return true;
+}
+
+typedef NSString * (^JSBlock)(NSError *);
+- (JSBlock)funcGenerateBlock {
+    JSBlock block = ^(NSError *err) {
+        if (err) {
+            return [err description];
+        }else {
+            return @"no error";
+        }
+    };
+    return block;
+}
+
+- (NSString *)excuteBlockWithNilParameters:(JSBlock)blk {
+    if (blk) {
+        return blk(nil);
+    }
+    return nil;
 }
 
 + (void)classFuncToSwizzle:(JPTestObject *)testObject int:(NSInteger)i
@@ -479,6 +504,17 @@ typedef struct {
     return transform;
 }
 
+#pragma mark structPointer
+- (void)funcWithRectPointer:(CGRect *)rect
+{
+    self.funcWithRectPointerPassed = rect->size.width == 100;
+    rect->origin.x = 42;
+}
+- (void)funcWithTransformPointer:(CGAffineTransform *)transform
+{
+    self.funcWithTransformPointerPassed = transform->a == 100;
+    transform->tx = 42;
+}
 @end
 
 

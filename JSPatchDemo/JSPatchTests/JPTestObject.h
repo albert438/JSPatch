@@ -61,6 +61,10 @@
 @property (nonatomic, assign) BOOL funcToSwizzleReturnPointPassed;
 @property (nonatomic, assign) BOOL funcToSwizzleReturnSizePassed;
 @property (nonatomic, assign) BOOL funcToSwizzleReturnRangePassed;
+@property (nonatomic, assign) BOOL funcToSwizzleReturnRectJSPassed;
+@property (nonatomic, assign) BOOL funcToSwizzleReturnPointJSPassed;
+@property (nonatomic, assign) BOOL funcToSwizzleReturnSizeJSPassed;
+@property (nonatomic, assign) BOOL funcToSwizzleReturnRangeJSPassed;
 @property (nonatomic, assign) BOOL funcToSwizzleTestGCDPassed;
 @property (nonatomic, assign) BOOL funcToSwizzleTestClassPassed;
 @property (nonatomic, assign) BOOL funcToSwizzleTestSelectorPassed;
@@ -70,6 +74,8 @@
 @property (nonatomic, assign) BOOL funcTestPointerPassed;
 @property (nonatomic, assign) BOOL funcTestSizeofPassed;
 @property (nonatomic, assign) BOOL funcTestGetPointerPassed;
+@property (nonatomic, assign) BOOL funcTestNSErrorPointerPassed;
+@property (nonatomic, assign) BOOL funcTestNilParametersInBlockPassed;
 @property (nonatomic, assign) BOOL classFuncToSwizzlePassed;
 @property (nonatomic, assign) BOOL classFuncToSwizzleReturnObjPassed;
 @property (nonatomic, assign) BOOL classFuncToSwizzleReturnObjCalledOriginalPassed;
@@ -93,6 +99,8 @@
 
 @property (nonatomic, assign) BOOL funcWithTransformPassed;
 @property (nonatomic, assign) BOOL transformTranslatePassed;
+@property (nonatomic, assign) BOOL funcWithRectPointerPassed;
+@property (nonatomic, assign) BOOL funcWithTransformPointerPassed;
 
 @property (nonatomic, assign) BOOL consoleLogPassed;
 @property (nonatomic, assign) BOOL overrideParentMethodPassed;

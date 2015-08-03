@@ -36,15 +36,19 @@ var global = this;
       return "overrided";
     },
     funcToSwizzleReturnRect: function(rect) {
+      self.setFuncToSwizzleReturnRectJSPassed(rect.width == 100)
       return rect;
     },
     funcToSwizzleReturnSize: function(size) {
+      self.setFuncToSwizzleReturnSizeJSPassed(size.width == 42)
       return size;
     },
     funcToSwizzleReturnPoint: function(point) {
+      self.setFuncToSwizzleReturnPointJSPassed(point.x == 42)
       return point;
     },
     funcToSwizzleReturnRange: function(range) {
+      self.setFuncToSwizzleReturnRangeJSPassed(range.length == 42)
       return range;
     },
     funcToSwizzleTestGCD: function(completeBlock) {
@@ -214,7 +218,7 @@ var global = this;
     str: "stringFromJS",
     view: view
   }, view)
-  obj.setFuncReturnObjectBlockReturnValuePassed(blkRet == "succ")
+  obj.setFuncReturnObjectBlockReturnValuePassed(blkRet.toJS() == "succ")
 
   obj.callBlockWithStringAndInt(block("NSString *, int", function(str, num) {
     obj.setCallBlockWithStringAndIntPassed(str.toJS() == "stringFromOC" && num == 42)
@@ -237,7 +241,7 @@ var global = this;
       "str": "stringFromJS",
       "view": view
     }: {}), view)
-    obj.setCallBlockWithObjectAndBlockReturnValuePassed(ret == "succ")
+    obj.setCallBlockWithObjectAndBlockReturnValuePassed(ret.toJS() == "succ")
   }))
 
   //////super
@@ -311,7 +315,8 @@ var global = this;
   var vectorSize     = sizeof("CGVector")
   var edgeInsetsSize = sizeof("UIEdgeInsets")
   var transformSize  = sizeof("CGAffineTransform")
-  obj.setFuncTestSizeofPassed(rectSize > 0 && pointSize > 0 && sizeSize > 0 && vectorSize > 0 && edgeInsetsSize > 0 && transformSize > 0)
+  var rangeSize      = sizeof("NSRange")
+  obj.setFuncTestSizeofPassed(rectSize > 0 && pointSize > 0 && sizeSize > 0 && vectorSize > 0 && edgeInsetsSize > 0 && transformSize > 0 && rangeSize > 0)
  
 //getPointerTest1 - Test Object in JPBoxing
   var sig = require('JPTestObject').instanceMethodSignatureForSelector("funcTestGetPointer1:");
@@ -355,4 +360,39 @@ var global = this;
   free(ret3)
   free(ptr)
  
+//funcTestNSErrorPointer
+  var p_error = malloc(8)
+  obj.funcTestNSErrorPointer(p_error)
+  var error = pval(p_error)
+  if (!error) {
+     obj.setFuncTestNSErrorPointerPassed(false)
+  } else {
+    var code = error.code()
+    obj.setFuncTestNSErrorPointerPassed(code==43)
+  }
+  releaseTmpObj(p_error)
+  free(p_error)
+
+//funcTestNilParametersInBlock
+  var blk  = obj.funcGenerateBlock()
+  var str1 = blk(obj.funcReturnNil())
+  var str2 = blk(null)
+  var str3 = obj.excuteBlockWithNilParameters(block("NSError *", blk))
+  if (str1.toJS() == "no error" && str2.toJS() == "no error" && str3.toJS() == "no error") {
+    obj.setFuncTestNilParametersInBlockPassed(true)
+  }
+
+//newStruct
+  var pRect = newStruct('CGRect', {x:0, y:0, width:100, height:100});
+  obj.funcWithRectPointer(pRect);
+  var rect = pValStruct('CGRect', pRect);
+  obj.setFuncWithRectPointerPassed(obj.funcWithRectPointerPassed() && rect.x == 42)
+  free(pRect);
+ 
+  var pTransform = newStruct('CGAffineTransform', {tx:0, ty:0, a:100, b:100, c:0, d:0});
+  obj.funcWithTransformPointer(pTransform);
+  var transform = pValStruct('CGAffineTransform', pTransform);
+  obj.setFuncWithTransformPointerPassed(obj.funcWithTransformPointerPassed() && transform.tx == 42)
+  free(pTransform);
+
 })();

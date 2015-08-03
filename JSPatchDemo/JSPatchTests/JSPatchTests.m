@@ -99,6 +99,12 @@
     XCTAssert(obj.funcToSwizzleReturnPointPassed, @"funcToSwizzleReturnPointPassed");
     XCTAssert(obj.funcToSwizzleReturnSizePassed, @"funcToSwizzleReturnSizePassed");
     XCTAssert(obj.funcToSwizzleReturnRangePassed, @"funcToSwizzleReturnRangePassed");
+    
+    XCTAssert(obj.funcToSwizzleReturnRectJSPassed, @"funcToSwizzleReturnRectJSPassed");
+    XCTAssert(obj.funcToSwizzleReturnPointJSPassed, @"funcToSwizzleReturnPointJSPassed");
+    XCTAssert(obj.funcToSwizzleReturnSizeJSPassed, @"funcToSwizzleReturnSizeJSPassed");
+    XCTAssert(obj.funcToSwizzleReturnRangeJSPassed, @"funcToSwizzleReturnRangeJSPassed");
+    
     XCTAssert(obj.funcToSwizzleTestClassPassed, @"funcToSwizzleTestClassPassed");
     XCTAssert(obj.funcToSwizzleTestSelectorPassed, @"funcToSwizzleTestSelectorPassed");
     XCTAssert(obj.funcToSwizzleTestCharPassed, @"funcToSwizzleTestCharPassed");
@@ -107,6 +113,8 @@
     XCTAssert(obj.funcTestPointerPassed, @"funcTestPointerPassed");
     XCTAssert(obj.funcTestSizeofPassed,@"funcSizeofPassed");
     XCTAssert(obj.funcTestGetPointerPassed, @"funcGetPointerPassed");
+    XCTAssert(obj.funcTestNSErrorPointerPassed, @"funcTestNSErrorPointerPassed");
+    XCTAssert(obj.funcTestNilParametersInBlockPassed, @"funcTestNilParametersInBlockPassed");
     NSDictionary *originalDict = @{@"k": @"v"};
     NSDictionary *dict = [obj funcToSwizzleReturnDictionary:originalDict];
     XCTAssert(originalDict == dict, @"funcToSwizzleReturnDictionary");
@@ -141,6 +149,8 @@
     
     XCTAssert(obj.funcWithTransformPassed, @"funcWithTransformPassed");
     XCTAssert(obj.transformTranslatePassed, @"funcWithTransformPassed");
+    XCTAssert(obj.funcWithRectPointerPassed, @"funcWithRectPointerPassed");
+    XCTAssert(obj.funcWithTransformPointerPassed, @"funcWithTransformPointerPassed");
     
     XCTAssertEqualObjects(@"overrided",[subObj funcOverrideParentMethod]);
     
