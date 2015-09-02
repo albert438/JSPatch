@@ -228,6 +228,32 @@ static NSMutableDictionary *registeredStruct;
     return nil;
 }
 
++ (void)resetAllPatchs {
+    @synchronized(_context){
+        for (Class cls in _JSOverideMethods.allKeys) {
+            NSDictionary* clsMethods = _JSOverideMethods[cls];
+            for (NSString* selectorName in clsMethods.allKeys) {
+                NSString *ORIGSelectorName = [selectorName stringByReplacingCharactersInRange:NSMakeRange(0, 3) withString:@"ORIG"];
+                NSString *originSelectorName = [selectorName stringByReplacingCharactersInRange:NSMakeRange(0, 3) withString:@""];
+                IMP originIMP = class_getMethodImplementation(cls, NSSelectorFromString(ORIGSelectorName));
+                Method classMethod = class_getClassMethod(cls, NSSelectorFromString(originSelectorName));
+                if (classMethod) {
+                    const char *types = method_getTypeEncoding(classMethod);
+                    class_replaceMethod(cls, NSSelectorFromString(originSelectorName), originIMP, types);
+                } else {
+                    Method instanceMethod = class_getInstanceMethod(cls, NSSelectorFromString(originSelectorName));
+                    const char *types = method_getTypeEncoding(instanceMethod);
+                    class_replaceMethod(cls, NSSelectorFromString(originSelectorName), originIMP, types);
+                }
+            }
+        }
+        _JSOverideMethods       = nil;
+        _JSMethodSignatureCache = nil;
+        _TMPMemoryPool          = nil;
+        _propKeys               = nil;
+    }
+}
+
 + (JSContext *)context
 {
     return _context;

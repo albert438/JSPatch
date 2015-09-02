@@ -37,11 +37,15 @@
 
 /*!
  @method
+ @description Reset All The Patchs
+ */
++ (void)resetAllPatchs;
+
+/*!
+ @method
  @description Return the JSPatch JavaScript execution environment.
  */
 + (JSContext *)context;
-
-
 
 /*!
  @method
